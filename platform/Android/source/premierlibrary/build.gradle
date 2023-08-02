@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 def rootPath = rootProject.getRootDir().getAbsolutePath()
 
-def fullPackage = System.getenv("ANDROID_FULL_PACKAGE")
+def fullPackage =    true //System.getenv("ANDROID_FULL_PACKAGE")
 println("fullpackage = ${fullPackage}")
 
 android {
@@ -12,11 +12,11 @@ android {
 
 
     flavorDimensions "default"
-    compileSdkVersion 26
+    compileSdkVersion 33
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 26
+        minSdkVersion 21
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
