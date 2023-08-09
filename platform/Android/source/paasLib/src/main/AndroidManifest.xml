@@ -8,16 +8,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+<!--
     <application
          >
-<!--        <activity android:name="com.cicada.player.app.SourceChooseActivity"
+        <activity android:name="com.cicada.player.app.SourceChooseActivity"
             android:exported="true">
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
         <activity
             android:name="com.cicada.player.app.CicadaPlayerActivity"
             android:configChanges="orientation|keyboard|locale|screenSize|layoutDirection"
@@ -33,5 +34,6 @@
         <activity android:name="com.cicada.player.app.SourceInputUrlActivity" />
         <activity android:name="com.cicada.player.app.multiInstance.MultiPlayerActivity" />
     </application>
+-->
 
 </manifest>

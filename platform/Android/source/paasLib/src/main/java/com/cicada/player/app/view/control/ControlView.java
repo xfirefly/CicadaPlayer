@@ -630,14 +630,14 @@ public class ControlView extends RelativeLayout implements ViewAction {
      */
     @Override
     public void show() {
-        if (mHideType == HideType.End) {
+/*        if (mHideType == HideType.End) {
             //如果是由于错误引起的隐藏，那就不能再展现了
             setVisibility(GONE);
             hideQualityDialog();
         } else {
             updateAllViews();
             setVisibility(VISIBLE);
-        }
+        }*/
     }
 
     /**
