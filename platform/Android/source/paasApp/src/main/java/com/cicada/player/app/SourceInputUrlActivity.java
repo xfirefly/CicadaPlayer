@@ -91,7 +91,7 @@ public class SourceInputUrlActivity extends BaseActivity implements View.OnClick
                         url = hint.toString();
                     }
                 }
-                ExoPlayerActivity.startExoPlayerActivity(this, url);
+                //ExoPlayerActivity.startExoPlayerActivity(this, url);
                 break;
             case R.id.tv_right:
                 //二维码扫描

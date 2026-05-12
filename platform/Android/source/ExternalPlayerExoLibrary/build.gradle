@@ -28,7 +28,7 @@ dependencies {
     implementation project(':premierlibrary')
 
     //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
+    ///implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
 
     implementation 'androidx.annotation:annotation:1.6.0'
 }
