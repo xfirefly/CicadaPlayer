@@ -93,7 +93,7 @@ function load_source() {
 }
 
 function check_android_tools() {
-    if [[ `which aarch64-linux-android-gcc` ]];then
+    if [[ `which clang` ]];then
         return 0;
     fi
 
@@ -113,8 +113,7 @@ function check_android_tools() {
         ANDROID_NDK_HOME=$ANDROID_NDK
     fi
     echo ANDROID_NDK is ${ANDROID_NDK}
-    PATH=$PATH:${ANDROID_NDK}:${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST}-x86_64/bin
-    PATH=$PATH:${ANDROID_NDK}/toolchains/aarch64-linux-android-4.9/prebuilt/${HOST}-x86_64/bin
+    PATH=$PATH:${ANDROID_NDK}:${ANDROID_NDK}/toolchains/llvm/prebuilt/${HOST}-x86_64/bin
 }
 
 function apply_config() {
@@ -238,7 +237,7 @@ export TARGET_PLATFORM=$1
 
 if [[ "$1" == "Android" ]];then
     if  [[ -z "${ANDROID_NDK}" ]];then
-        export ANDROID_NDK=~/Android-env/android-ndk-r14b/
+        export ANDROID_NDK=~/Android-env/android-ndk-r27/
     fi
     check_android_tools
     check_dav1d

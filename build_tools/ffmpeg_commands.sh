@@ -26,6 +26,11 @@ function ffmpeg_config_reset(){
     ffmpeg_extra_cflags=""
     ffmpeg_extra_ldlags=""
     ffmpeg_config_cc=""
+    ffmpeg_config_as=""
+    ffmpeg_config_ar=""
+    ffmpeg_config_nm=""
+    ffmpeg_config_ranlib=""
+    ffmpeg_config_strip=""
     ffmpeg_install_dir=""
 }
 component_classes="decoder encoder demuxer muxer parser hwaccel protocol bsf filter";
@@ -370,6 +375,18 @@ function ffmpeg_config_set_cc(){
 function ffmpeg_config_set_as(){
     ffmpeg_config_as="$1"
 }
+function ffmpeg_config_set_ar(){
+    ffmpeg_config_ar="$1"
+}
+function ffmpeg_config_set_nm(){
+    ffmpeg_config_nm="$1"
+}
+function ffmpeg_config_set_ranlib(){
+    ffmpeg_config_ranlib="$1"
+}
+function ffmpeg_config_set_strip(){
+    ffmpeg_config_strip="$1"
+}
 
 function ffmpeg_config_add_extra_cflags(){
     if [[ "$1" == "" ]]
@@ -436,6 +453,10 @@ function ffmpeg_config(){
         ${FFMPEG_SOURCE_DIR}/configure   ${ff_config} \
             "--as=${ffmpeg_config_as}"                \
             "--cc=${ffmpeg_config_cc}"              \
+            "--ar=${ffmpeg_config_ar}"              \
+            "--nm=${ffmpeg_config_nm}"              \
+            "--ranlib=${ffmpeg_config_ranlib}"      \
+            "--strip=${ffmpeg_config_strip}"        \
             "--extra-cflags=${ffmpeg_extra_cflags}"   \
             "--extra-ldflags=${ffmpeg_extra_ldlags}"  \
             --prefix=${ffmpeg_install_dir}

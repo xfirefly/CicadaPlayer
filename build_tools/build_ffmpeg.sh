@@ -97,6 +97,10 @@ function build_ffmpeg(){
         ffmpeg_config_set_cross_config "${FFMPEG_CROSS_COMPILE_CONFIG}"
         ffmpeg_config_set_cc "$CC"
         ffmpeg_config_set_as "$AS"
+        ffmpeg_config_set_ar "$AR"
+        ffmpeg_config_set_nm "$NM"
+        ffmpeg_config_set_ranlib "$RANLIB"
+        ffmpeg_config_set_strip "$STRIP"
     fi
 
     ffmpeg_config_set_install "$PWD/install/ffmpeg/$1/$2"

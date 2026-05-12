@@ -37,7 +37,23 @@ function build_openssl_111(){
     if [[ "$1" == "Android" ]]
     then
         cross_compile_set_platform_Android  $2
-        config_platform="android-${CPU_ARCH}"
+        if [ ! -d "${ANDROID_NDK}/platforms" ]; then
+             case "$2" in
+                 "armeabi-v7a") config_platform="linux-armv4" ;;
+                 "arm64-v8a")   config_platform="linux-aarch64" ;;
+                 "x86")         config_platform="linux-x86" ;;
+                 "x86_64")      config_platform="linux-x86_64" ;;
+             esac
+             # OpenSSL 1.1.1's android-* targets are broken for NDK R22+ due to missing 'platforms' dir.
+             # Generic targets work better if we pass CC/AR/etc. explicitly.
+             # We must unset ANDROID_NDK_HOME to prevent Configure from triggering its broken Android logic.
+             export ANDROID_NDK_HOME_SAVED=${ANDROID_NDK_HOME}
+             export CROSS_COMPILE_SAVED=${CROSS_COMPILE}
+             unset ANDROID_NDK_HOME
+             export CROSS_COMPILE=""
+        else
+             config_platform="android-${CPU_ARCH}"
+        fi
         local cross_compile_opt="-D__ANDROID_API__=${NDK_V}"
         config_opt="${config_opt} no-shared no-asm"
     elif [[ "$1" == "iOS" ]]
@@ -112,7 +128,13 @@ function build_openssl_111(){
     cd ${build_dir}
     if [ "${BUILD}" != "False" ];then
 
-        ${OPEN_SSL_SOURCE_DIR}/Configure ${config_platform} ${config_opt} ${cross_compile_opt} ${HARDENED_CFLAG} --prefix=${install_dir}  --openssldir=${install_dir}
+        ${OPEN_SSL_SOURCE_DIR}/Configure ${config_platform} ${config_opt} ${cross_compile_opt} ${HARDENED_CFLAG} --prefix=${install_dir}  --openssldir=${install_dir} \
+            CC="${CC}" AR="${AR}" NM="${NM}" RANLIB="${RANLIB}" STRIP="${STRIP}"
+
+        if [ -n "${ANDROID_NDK_HOME_SAVED}" ]; then
+            export ANDROID_NDK_HOME=${ANDROID_NDK_HOME_SAVED}
+            export CROSS_COMPILE=${CROSS_COMPILE_SAVED}
+        fi
 
         make -j8 V=1 || exit 1
         make  install_sw ||exit 1

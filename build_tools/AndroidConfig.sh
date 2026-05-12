@@ -1,76 +1,97 @@
 #!/usr/bin/env bash
 
+# Android build configuration for NDK R27+
+# Uses the unified LLVM toolchain
+
+function android_init_env(){
+    local ABI=$1
+    NDK_V=21 # Minimum supported API level (default)
+    
+    # Determine HOST
+    UNAME=$(uname)
+    if [ "$UNAME" = "Darwin" ]; then
+        HOST=darwin
+    else
+        HOST=linux
+    fi
+
+    if [ -z "${ANDROID_NDK}" ]; then
+        echo "ANDROID_NDK not set"
+        return 1
+    fi
+
+    TOOLCHAIN_BIN=${ANDROID_NDK}/toolchains/llvm/prebuilt/${HOST}-x86_64/bin
+    SYSTEM_ROOT=${ANDROID_NDK}/toolchains/llvm/prebuilt/${HOST}-x86_64/sysroot
+
+    case "$ABI" in
+        "armeabi-v7a")
+            CPU_ARCH=arm
+            TARGET=armv7a-linux-androideabi
+            CROSS_COMPILE=arm-linux-androideabi
+            CPU_FLAGS="-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mthumb"
+            CPU_LD_FLAGS=""
+            NEON_SUPPORT="TRUE"
+            ;;
+        "arm64-v8a")
+            CPU_ARCH=arm64
+            TARGET=aarch64-linux-android
+            CROSS_COMPILE=aarch64-linux-android
+            CPU_FLAGS=""
+            CPU_LD_FLAGS=""
+            NEON_SUPPORT="TRUE"
+            ;;
+        "x86")
+            CPU_ARCH=x86
+            TARGET=i686-linux-android
+            CROSS_COMPILE=i686-linux-android
+            CPU_FLAGS=""
+            CPU_LD_FLAGS=""
+            NEON_SUPPORT="FALSE"
+            ;;
+        "x86_64")
+            CPU_ARCH=x86_64
+            TARGET=x86_64-linux-android
+            CROSS_COMPILE=x86_64-linux-android
+            CPU_FLAGS=""
+            CPU_LD_FLAGS=""
+            NEON_SUPPORT="FALSE"
+            ;;
+        *)
+            echo "Unsupported Android ABI: $ABI"
+            return 1
+            ;;
+    esac
+
+    # Set compilers and tools
+    CC=${TOOLCHAIN_BIN}/${TARGET}${NDK_V}-clang
+    CXX=${TOOLCHAIN_BIN}/${TARGET}${NDK_V}-clang++
+    AS=${CC}
+    AR=${TOOLCHAIN_BIN}/llvm-ar
+    NM=${TOOLCHAIN_BIN}/llvm-nm
+    RANLIB=${TOOLCHAIN_BIN}/llvm-ranlib
+    STRIP=${TOOLCHAIN_BIN}/llvm-strip
+    
+    # Export for other scripts
+    export CC CXX AS AR NM RANLIB STRIP
+    export TARGET_OS=Android
+    export SYSTEM_ROOT
+    export CPU_ARCH ABI NDK_V
+    
+    echo "Android environment initialized for $ABI (API $NDK_V)"
+    echo "CC: $CC"
+}
+
+# Compatibility wrapper
+function android_init_env_clang(){
+    android_init_env "$1"
+}
+
+# Legacy arch-specific inits (now just call the main one or set variables)
 function android_armv7_a_init_env(){
-    NDK_V=21
-    ABI=armeabi-v7a
-    CPU_ARCH=arm
-    CROSS_COMPILE=arm-linux-androideabi
-    CPU_FLAGS="-march=armv7-a -mcpu=cortex-a8 -mfpu=vfpv3-d16 -mfloat-abi=softfp -mthumb"
-    CPU_LD_FLAGS="-Wl,--fix-cortex-a8"
+    android_init_env "armeabi-v7a"
 }
 
 function android_arm64_v8a_init_env(){
-    NDK_V=21
-    ABI=arm64-v8a
-    CPU_ARCH=arm64
-    CROSS_COMPILE=aarch64-linux-android
-    CPU_FLAGS=""
-    CPU_LD_FLAGS=""
-}
-#CROSS_COMPILE=Android
-function android_init_env(){
-    if [ "$1" == "armeabi-v7a" ]
-    then
-        android_armv7_a_init_env
-    elif [ "$1" == "arm64-v8a" ]
-    then
-        android_arm64_v8a_init_env
-    else
-        echo unspported Android ABI $1
-        return
-    fi
-
-    local PLATFORM=${ANDROID_NDK}/platforms/android-${NDK_V}/arch-${CPU_ARCH}
-    CC=""${CROSS_COMPILE}"-gcc --sysroot="${PLATFORM}""
-    TARGET_OS=Android
-    SYSTEM_ROOT=${PLATFORM}
-
-    if [[ "${CPU_ARCH}" =~ "arm" ]]
-    then
-        NEON_SUPPORT="TRUE"
-    else
-        NEON_SUPPORT="FALSE"
-    fi
-}
-
-function android_init_env_clang(){
-    if [ "$1" == "armeabi-v7a" ]
-    then
-        android_armv7_a_init_env
-    elif [ "$1" == "arm64-v8a" ]
-    then
-        android_arm64_v8a_init_env
-    else
-        echo unspported Android ABI $1
-        return
-    fi
-
-    clang="${ANDROID_NDK}/toolchains/llvm/prebuilt/${HOST}-x86_64/bin/clang"
-
-    export NDK_TOOLCHAIN="$ANDROID_NDK/toolchains/$CROSS_COMPILE-4.9/prebuilt/${HOST}-x86_64"
-
-    local PLATFORM=${ANDROID_NDK}/platforms/android-${NDK_V}/arch-${CPU_ARCH}
-    CC="$clang -target ${CROSS_COMPILE} -gcc-toolchain ${NDK_TOOLCHAIN} --sysroot="${PLATFORM}""
-    TARGET_OS=Android
-    SYSTEM_ROOT=${PLATFORM}
-
-    echo "CC is ${CC}"
-
-    if [[ "${CPU_ARCH}" =~ "arm" ]]
-    then
-        NEON_SUPPORT="TRUE"
-    else
-        NEON_SUPPORT="FALSE"
-    fi
+    android_init_env "arm64-v8a"
 }
 
