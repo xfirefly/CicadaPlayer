@@ -19,7 +19,7 @@ function ffmpeg_cross_compile_set_Android(){
     ffmpeg_cross_compile_config_add "--toolchain=hardened"
     ffmpeg_cross_compile_config_add "--enable-pic"
     ffmpeg_cross_compile_config_add "--extra-cflags=\"-fPIC\""
-
+    ffmpeg_cross_compile_config_add "--extra-ldflags=\"-Wl,-Bsymbolic\""
  
     if [ "${NEON_SUPPORT}" == "TRUE" ]
     then

@@ -94,6 +94,7 @@ function build_curl(){
                 --without-librtmp \
                 --without-brotli \
                 --without-libidn \
+                --with-pic \
                 --without-zstd"
     local build_dir="${CWD}/build/curl/$1/$2"
     local install_dir="${CWD}/install/curl/$1/$2"
@@ -121,6 +122,8 @@ function build_curl(){
             local nghttp2_opt="--without-nghttp2"
         fi
 
+        export CFLAGS="-fPIC"
+        export LDFLAGS="-fPIC"
         ${CURL_SOURCE_DIR}/configure -host=${CROSS_COMPILE} CC="${CC}" ${ssl_opt} ${resolver_opt} ${config} ${rtmp_opt} ${nghttp2_opt} --prefix=${install_dir} ${LIBSDEPEND} || exit 1
         make -j8 install V=1 || exit 1
         cd -
