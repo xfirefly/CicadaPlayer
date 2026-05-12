@@ -48,7 +48,8 @@ function build_boost() {
         optimization=space \
         toolset=gcc-android_${NDK_V}_${ABI_NAME} \
         --build-dir=${build_dir}  \
-        --stagedir=${install_dir}
+        --stagedir=${install_dir} \
+        cxxflags="-fPIC"
 
     elif [ "$1" == "iOS" ];then
         if [ "$2" = "i386" -o "$2" = "x86_64" ];then

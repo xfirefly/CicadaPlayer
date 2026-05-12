@@ -54,7 +54,7 @@ function build_openssl_111(){
         else
              config_platform="android-${CPU_ARCH}"
         fi
-        local cross_compile_opt="-D__ANDROID_API__=${NDK_V}"
+        local cross_compile_opt="-D__ANDROID_API__=${NDK_V} -fPIC"
         config_opt="${config_opt} no-shared no-asm"
     elif [[ "$1" == "iOS" ]]
     then

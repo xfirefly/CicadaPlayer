@@ -13,7 +13,7 @@ function build_openssl(){
         export ANDROID_DEV="$SYSTEM_ROOT/usr"
         print_warning "CROSS_COMPILE is $CROSS_COMPILE"
 
-        local cross_compile_opt="--cross-compile-prefix="${CROSS_COMPILE}"-"
+        local cross_compile_opt="--cross-compile-prefix="${CROSS_COMPILE}"- -fPIC"
     elif [ "$1" == "iOS" ]
     then
         cross_compile_set_platform_iOS $2

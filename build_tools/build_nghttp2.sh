@@ -16,6 +16,8 @@ function build_nghttp2(){
     if [ "$1" == "Android" ]
     then
         cross_compile_set_platform_Android  $2
+        export CFLAGS="-fPIC"
+        export LDFLAGS="-fPIC"
     elif [ "$1" == "iOS" ]
     then
         cross_compile_set_platform_iOS $2

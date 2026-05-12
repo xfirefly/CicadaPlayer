@@ -28,7 +28,7 @@ function android_init_env(){
             CPU_ARCH=arm
             TARGET=armv7a-linux-androideabi
             CROSS_COMPILE=arm-linux-androideabi
-            CPU_FLAGS="-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mthumb"
+            CPU_FLAGS="-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mthumb -fPIC"
             CPU_LD_FLAGS=""
             NEON_SUPPORT="TRUE"
             ;;
@@ -36,7 +36,7 @@ function android_init_env(){
             CPU_ARCH=arm64
             TARGET=aarch64-linux-android
             CROSS_COMPILE=aarch64-linux-android
-            CPU_FLAGS=""
+            CPU_FLAGS="-fPIC"
             CPU_LD_FLAGS=""
             NEON_SUPPORT="TRUE"
             ;;
@@ -44,7 +44,7 @@ function android_init_env(){
             CPU_ARCH=x86
             TARGET=i686-linux-android
             CROSS_COMPILE=i686-linux-android
-            CPU_FLAGS=""
+            CPU_FLAGS="-fPIC"
             CPU_LD_FLAGS=""
             NEON_SUPPORT="FALSE"
             ;;
@@ -52,7 +52,7 @@ function android_init_env(){
             CPU_ARCH=x86_64
             TARGET=x86_64-linux-android
             CROSS_COMPILE=x86_64-linux-android
-            CPU_FLAGS=""
+            CPU_FLAGS="-fPIC"
             CPU_LD_FLAGS=""
             NEON_SUPPORT="FALSE"
             ;;

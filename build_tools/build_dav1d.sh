@@ -50,7 +50,7 @@ function build_dav1d(){
         DAV1D_AR=""${CROSS_COMPILE}"-ar"
         DAV1D_LD=""${CROSS_COMPILE}"-ld"
         DAV1D_STRIP=""${CROSS_COMPILE}"-strip"
-        DAV1D_ARGS="--sysroot=${SYSTEM_ROOT}"
+        DAV1D_ARGS="--sysroot=${SYSTEM_ROOT} -fPIC"
         DAV1D_SYSTEM="linux"
         DAV1D_CPU_FAMILY="aarch64"
         DAV1D_CPU="arm"

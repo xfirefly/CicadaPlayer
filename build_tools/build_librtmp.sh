@@ -10,7 +10,7 @@ build_librtmp(){
         config="$config XLDFLAGS=-L${SYSTEM_ROOT}/usr/lib/"
         config="$config CROSS_COMPILE="${CROSS_COMPILE}"-"
         local CC=${CC}
-        local XCFLAGS="-L${SYSTEM_ROOT}/usr/lib/ -g"
+        local XCFLAGS="-L${SYSTEM_ROOT}/usr/lib/ -g -fPIC"
     elif [ "$1" == "iOS" ]
     then
         cross_compile_set_platform_iOS $2
