@@ -52,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
     AlertDialog openAppDetDialog = null;
     protected void showPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.app_name) + getString(R.string.no_write_external_storage_permission));
+        builder.setMessage(getString(R.string.cic_app_name) + getString(R.string.no_write_external_storage_permission));
         builder.setPositiveButton(getString(R.string.cicada_setting), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

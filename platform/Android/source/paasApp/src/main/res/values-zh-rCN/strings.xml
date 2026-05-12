@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CicadaPlayerDemo</string>
+    <string name="cic_app_name">CicadaPlayerDemo</string>
     <string name="cicada_success">成功</string>
 
     <!--title-->
